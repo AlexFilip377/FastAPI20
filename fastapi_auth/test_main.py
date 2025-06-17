@@ -2,9 +2,9 @@ import pytest
 import os
 from fastapi.testclient import TestClient
 from sqlmodel import SQLModel, create_engine, Session
-from .main import app, get_session
-from .models import User, Note
-from .auth import get_password_hash
+from fastapi_auth.main import app, get_session
+from fastapi_auth.models import User, Note
+from fastapi_auth.auth import get_password_hash
 
 
 TEST_DATABASE_URL = "sqlite:///./test.db"

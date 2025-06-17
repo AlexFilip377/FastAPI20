@@ -1,12 +1,12 @@
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
-from config import get_settings
+from fastapi_auth.config import get_settings
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
 from sqlmodel import Session, select
-from database import get_session
-from models import User
+from fastapi_auth.database import get_session
+from fastapi_auth.models import User
 from typing import Callable
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
