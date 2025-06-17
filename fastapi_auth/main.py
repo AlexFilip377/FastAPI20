@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException, status, Query, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
-from connection_manager import ConnectionManager
+from fastapi_auth.connection_manager import ConnectionManager
 from sqlmodel import Session, select
 from models import User, Note
 from schemas import UserCreate, UserLogin, NoteCreate, NoteOut, NoteUpdate
