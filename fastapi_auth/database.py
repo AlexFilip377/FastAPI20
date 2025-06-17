@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel, create_engine, Session
 
-DATABASE_URL = "postgresql://postgres:1234@db:5432/postgres"
+DATABASE_URL = "postgresql://postgres:1234@host.docker.internal:5432/postgres"
 
 engine = create_engine(DATABASE_URL, echo=True)
 
