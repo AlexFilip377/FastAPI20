@@ -2,18 +2,18 @@ from fastapi import FastAPI, Depends, HTTPException, status, Query, WebSocket, W
 from fastapi.responses import HTMLResponse
 from fastapi_auth.connection_manager import ConnectionManager
 from sqlmodel import Session, select
-from models import User, Note
-from schemas import UserCreate, UserLogin, NoteCreate, NoteOut, NoteUpdate
-from database import create_db_and_tables, get_session
-from auth import create_access_token, get_password_hash, verify_password, get_current_user, require_role
+from fastapi_auth.models import User, Note
+from fastapi_auth.schemas import UserCreate, UserLogin, NoteCreate, NoteOut, NoteUpdate
+from fastapi_auth.database import create_db_and_tables, get_session
+from fastapi_auth.auth import create_access_token, get_password_hash, verify_password, get_current_user, require_role
 from typing import List
-from worker import send_email_task
+from fastapi_auth.worker import send_email_task
 from pydantic import BaseModel
-from cache import get_redis
-from config import get_settings
-from logging_config import setup_loging
+from fastapi_auth.cache import get_redis
+from fastapi_auth.config import get_settings
+from fastapi_auth.logging_config import setup_loging
 from prometheus_fastapi_instrumentator import Instrumentator
-from middleware.rate_limiter import RateLimiterMiddleware
+from fastapi_auth.middleware.rate_limiter import RateLimiterMiddleware
 import json
 import logging
 
