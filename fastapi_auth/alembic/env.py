@@ -3,8 +3,8 @@ import asyncio
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 from alembic import context
 from sqlmodel import SQLModel
-from database import DATABASE_URL
-from models import *
+from fastapi_auth.database import DATABASE_URL
+from fastapi_auth.models import *
 
 config = context.config
 fileConfig(config.config_file_name)
