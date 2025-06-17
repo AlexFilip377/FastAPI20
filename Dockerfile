@@ -1,12 +1,12 @@
 FROM python:3.11-slim
 
-WORKDIR /fastapi_auth
+WORKDIR /app
 
-COPY ./requirements.txt /fastapi_auth/requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+COPY ./requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
 
-COPY . /fastapi_auth
+COPY . /app
 
 EXPOSE 8000
 
-CMD ["uvicorn", ".main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "fastapi_auth.main:app", "--host", "0.0.0.0", "--port", "8000"]
