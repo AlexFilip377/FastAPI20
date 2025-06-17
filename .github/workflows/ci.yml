@@ -1,0 +1,65 @@
+name: CI/CD Pipeline
+
+on: [push]
+
+jobs:
+  built_and_test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 1234
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Install redis-cli
+      run: sudo apt-get update && sudo apt-get install -y redis-tools
+
+    - name: Wait for DB and Redis to be healthy
+      shell: bash
+      run: |
+        until pg_isready -h localhost -p 5432 -U postgres; do sleep 1; done
+        until redis-cli -h localhost ping | grep PONG; do sleep 1; done
+
+    - name: Run tests
+      env:
+        DATABASE_URL: postgresql+asyncpg://postgres:1234@localhost:5432/postgres
+        REDIS_URL: redis://localhost:6379
+      run: |
+        pytest
+
+    - name: Build Docker image
+      run: docker build -t my-fastapi-app .
