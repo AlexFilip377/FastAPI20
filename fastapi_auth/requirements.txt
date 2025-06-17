@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+sqlmodel
+asyncpg
+databases[postgresql]
+psycopg2-binary
+passlib[bcript]
+python-jose[cryptography]
+celery[redis]
+pydantic-settings
+python-dotenv
+pytest
+httpx
+prometheus_fastapi_instrumentator

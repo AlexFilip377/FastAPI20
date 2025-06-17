@@ -1,0 +1,54 @@
+
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  app:
+    build: .
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+      - prometheus
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/fastapi_auth
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      
+  worker:
+    build: .
+    command: celery -A worker.celery_app worker --loglevel=info
+    depends_on:
+      - redis
+      - app
+    environment:
+      REDIS_URL: redis://redis:6379/0
+
+volumes:
+  pgdata:
+  
