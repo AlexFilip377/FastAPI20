@@ -11,3 +11,4 @@ pydantic-settings
 python-dotenv
 pytest
 httpx
+prometheus_fastapi_instrumentator
